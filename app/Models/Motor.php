@@ -12,6 +12,7 @@ class Motor extends Model
     protected $primaryKey = 'nopolisi';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = false;
     
     protected $fillable = ['nopolisi', 'idpelanggan', 'nomesin', 'tipe', 'tahun', 'norangka'];
 

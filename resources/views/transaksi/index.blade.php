@@ -21,6 +21,7 @@
                     <th>Pelanggan</th>
                     <th>Tanggal</th>
                     <th>Total Biaya</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -31,7 +32,16 @@
                     <td>{{ $t->nopolisi }}</td>
                     <td>{{ $t->motor->pelanggan->nama ?? '-' }}</td>
                     <td>{{ $t->tanggal ? $t->tanggal->format('d/m/Y') : '-' }}</td>
-                    <td>Rp {{ $t->totalbiaya }}</td>
+                    <td>Rp {{ number_format((float)str_replace('.', '', $t->totalbiaya), 0, ',', '.') }}</td>
+                    <td>
+                        @if($t->status == 'pending')
+                            <span style="background: #f59e0b; color: #000; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Pending</span>
+                        @elseif($t->status == 'proses')
+                            <span style="background: #3b82f6; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Proses</span>
+                        @else
+                            <span style="background: #10b981; color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Selesai</span>
+                        @endif
+                    </td>
                     <td>
                         <div class="table-actions">
                             <a href="{{ route('transaksi.show', $t->nostruk) }}" class="btn-primary btn-sm" style="background: var(--info);">
@@ -52,7 +62,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center">Tidak ada data transaksi</td>
+                    <td colspan="7" class="text-center">Tidak ada data transaksi</td>
                 </tr>
                 @endforelse
             </tbody>

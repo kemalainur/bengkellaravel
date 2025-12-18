@@ -11,6 +11,7 @@ class Item extends Model
     protected $primaryKey = 'iditem';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = false;
     
     protected $fillable = ['iditem', 'namaitem', 'harga', 'jenis', 'qty'];
 

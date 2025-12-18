@@ -11,8 +11,9 @@ class Transaksi extends Model
     protected $table = 'transaksi';
     protected $primaryKey = 'nostruk';
     public $incrementing = false;
+    public $timestamps = false;
     
-    protected $fillable = ['nostruk', 'nopolisi', 'tanggal', 'totalbiaya', 'terbilang'];
+    protected $fillable = ['nostruk', 'nopolisi', 'tanggal', 'totalbiaya', 'terbilang', 'status'];
 
     protected $casts = [
         'tanggal' => 'date',

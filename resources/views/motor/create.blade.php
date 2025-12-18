@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@php $prefix = $routePrefix ?? 'motor'; @endphp
+@extends($prefix === 'advisor.motor' ? 'layouts.advisor' : 'layouts.app')
 
 @section('title', 'Tambah Motor - AHASS')
 @section('page-title', 'Tambah Motor')
@@ -7,7 +8,7 @@
 <div class="card-solid animate-fadeIn">
     <h4 class="card-title"><i class="fas fa-plus"></i> Form Tambah Motor</h4>
     
-    <form action="{{ route('motor.store') }}" method="POST" class="form-container">
+    <form action="{{ route($prefix . '.store') }}" method="POST" class="form-container">
         @csrf
         <div class="form-group">
             <label class="form-label">No Polisi</label>
@@ -47,7 +48,7 @@
         </div>
         
         <div class="form-actions">
-            <a href="{{ route('motor.index') }}" class="btn-secondary">
+            <a href="{{ route($prefix . '.index') }}" class="btn-secondary">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
             <button type="submit" class="btn-primary">

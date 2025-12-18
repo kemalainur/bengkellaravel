@@ -11,6 +11,7 @@ class Pelanggan extends Model
     protected $primaryKey = 'idpelanggan';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = false;
     
     protected $fillable = ['idpelanggan', 'nama', 'alamat'];
 

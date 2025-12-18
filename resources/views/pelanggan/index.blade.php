@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@php $prefix = $routePrefix ?? 'pelanggan'; @endphp
+@extends($prefix === 'advisor.pelanggan' ? 'layouts.advisor' : 'layouts.app')
 
 @section('title', 'Data Pelanggan - AHASS')
 @section('page-title', 'Data Pelanggan')
@@ -7,7 +8,7 @@
 <div class="card-solid animate-fadeIn">
     <div class="d-flex justify-between align-center mb-3" style="flex-wrap: wrap; gap: 1rem;">
         <h4 class="card-title mb-0"><i class="fas fa-users"></i> Tabel Pelanggan</h4>
-        <a href="{{ route('pelanggan.create') }}" class="btn-primary">
+        <a href="{{ route($prefix . '.create') }}" class="btn-primary">
             <i class="fas fa-plus"></i> Tambah Pelanggan
         </a>
     </div>
@@ -30,10 +31,10 @@
                     <td>{{ $p->alamat }}</td>
                     <td>
                         <div class="table-actions">
-                            <a href="{{ route('pelanggan.edit', $p->idpelanggan) }}" class="btn-primary btn-sm">
+                            <a href="{{ route($prefix . '.edit', $p->idpelanggan) }}" class="btn-primary btn-sm">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
-                            <form action="{{ route('pelanggan.destroy', $p->idpelanggan) }}" method="POST" style="display:inline;">
+                            <form action="{{ route($prefix . '.destroy', $p->idpelanggan) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">

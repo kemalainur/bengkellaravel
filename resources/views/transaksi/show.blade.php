@@ -50,11 +50,35 @@
         </tr>
         <tr>
             <th><i class="fas fa-money-bill"></i> Total Biaya</th>
-            <td><strong style="color: var(--accent-gold);">Rp {{ $transaksi->totalbiaya }}</strong></td>
+            <td><strong style="color: var(--accent-gold);">Rp {{ number_format((float)str_replace('.', '', $transaksi->totalbiaya), 0, ',', '.') }}</strong></td>
         </tr>
         <tr>
             <th><i class="fas fa-comment"></i> Terbilang</th>
             <td>{{ $transaksi->terbilang }}</td>
+        </tr>
+        <tr>
+            <th><i class="fas fa-info-circle"></i> Status</th>
+            <td>
+                @if($transaksi->status == 'pending')
+                    <span class="badge" style="background: #f59e0b; color: #000; padding: 6px 12px; border-radius: 20px;">Pending</span>
+                @elseif($transaksi->status == 'proses')
+                    <span class="badge" style="background: #3b82f6; color: #fff; padding: 6px 12px; border-radius: 20px;">Proses</span>
+                @else
+                    <span class="badge" style="background: #10b981; color: #fff; padding: 6px 12px; border-radius: 20px;">Selesai</span>
+                @endif
+                
+                <!-- Update Status Form -->
+                <form action="{{ route('transaksi.updateStatus', $transaksi->nostruk) }}" method="POST" style="display: inline; margin-left: 1rem;">
+                    @csrf
+                    @method('PATCH')
+                    <select name="status" onchange="this.form.submit()" style="padding: 6px 12px; border-radius: 8px; background: var(--bg-input); color: #fff; border: 1px solid var(--border-color);">
+                        <option value="">Ubah Status...</option>
+                        <option value="pending" {{ $transaksi->status == 'pending' ? 'disabled' : '' }}>Pending</option>
+                        <option value="proses" {{ $transaksi->status == 'proses' ? 'disabled' : '' }}>Proses</option>
+                        <option value="selesai" {{ $transaksi->status == 'selesai' ? 'disabled' : '' }}>Selesai</option>
+                    </select>
+                </form>
+            </td>
         </tr>
     </table>
 
@@ -83,10 +107,10 @@
                 @forelse($transaksi->details as $d)
                 <tr>
                     <td>{{ $d->item->namaitem ?? '-' }}</td>
-                    <td>Rp {{ $d->item->harga ?? '-' }}</td>
+                    <td>Rp {{ $d->item ? number_format((float)str_replace('.', '', $d->item->harga), 0, ',', '.') : '-' }}</td>
                     <td>{{ $d->item->jenis ?? '-' }}</td>
                     <td>{{ $d->banyaknya }}</td>
-                    <td>Rp {{ $d->hargatotal }}</td>
+                    <td>Rp {{ number_format((float)str_replace('.', '', $d->hargatotal), 0, ',', '.') }}</td>
                     <td>
                         <div class="table-actions">
                             <a href="{{ route('detail.edit', [$transaksi->nostruk, $d->id]) }}" class="btn-primary btn-sm">
@@ -114,6 +138,9 @@
     <div class="form-actions" style="margin-top: 2rem;">
         <a href="{{ route('transaksi.index') }}" class="btn-secondary">
             <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+        <a href="{{ route('transaksi.invoice', $transaksi->nostruk) }}" class="btn-primary">
+            <i class="fas fa-file-invoice"></i> Lihat Invoice
         </a>
     </div>
 </div>

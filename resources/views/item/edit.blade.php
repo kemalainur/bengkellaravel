@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@php $prefix = $routePrefix ?? 'item'; @endphp
+@extends($prefix === 'partman.item' ? 'layouts.partman' : 'layouts.app')
 
 @section('title', 'Edit Item - AHASS')
 @section('page-title', 'Edit Item')
@@ -7,7 +8,7 @@
 <div class="card-solid animate-fadeIn">
     <h4 class="card-title"><i class="fas fa-edit"></i> Form Edit Item</h4>
     
-    <form action="{{ route('item.update', $item->iditem) }}" method="POST" class="form-container">
+    <form action="{{ route($prefix . '.update', $item->iditem) }}" method="POST" class="form-container">
         @csrf
         @method('PUT')
         
@@ -41,7 +42,7 @@
         </div>
         
         <div class="form-actions">
-            <a href="{{ route('item.index') }}" class="btn-secondary">
+            <a href="{{ route($prefix . '.index') }}" class="btn-secondary">
                 <i class="fas fa-arrow-left"></i> Kembali
             </a>
             <button type="submit" class="btn-primary">

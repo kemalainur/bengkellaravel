@@ -68,4 +68,45 @@ class TransaksiController extends Controller
         $transaksi->delete();
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus!');
     }
+
+    /**
+     * Tampilkan halaman invoice
+     */
+    public function invoice($nostruk)
+    {
+        $transaksi = Transaksi::with(['details.item', 'motor.pelanggan'])
+            ->where('nostruk', $nostruk)
+            ->firstOrFail();
+
+        return view('transaksi.invoice', compact('transaksi'));
+    }
+
+    /**
+     * Cetak invoice dan update status ke selesai
+     */
+    public function cetakInvoice($nostruk)
+    {
+        $transaksi = Transaksi::where('nostruk', $nostruk)->firstOrFail();
+        
+        // Update status ke selesai ketika invoice dicetak
+        $transaksi->update(['status' => 'selesai']);
+
+        return redirect()->route('transaksi.invoice', $nostruk)
+            ->with('success', 'Invoice berhasil dicetak! Status transaksi diubah ke Selesai.');
+    }
+
+    /**
+     * Update status transaksi
+     */
+    public function updateStatus(Request $request, $nostruk)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,proses,selesai',
+        ]);
+
+        $transaksi = Transaksi::where('nostruk', $nostruk)->firstOrFail();
+        $transaksi->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Status transaksi berhasil diubah ke ' . ucfirst($request->status) . '!');
+    }
 }
