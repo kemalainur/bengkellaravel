@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('transaksi', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'proses', 'selesai'])->default('pending')->after('terbilang');
+        Schema::create('pelanggan', function (Blueprint $table) {
+            $table->string('idpelanggan', 20)->primary();
+            $table->string('nama', 100);
+            $table->text('alamat')->nullable();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('transaksi', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('pelanggan');
     }
 };
