@@ -19,7 +19,13 @@
         
         <div class="form-group">
             <label class="form-label">Pelanggan</label>
-            <input type="text" class="form-control" value="{{ $motor->pelanggan->nama ?? '-' }}" readonly>
+            <select name="idpelanggan" class="form-select" required>
+                @foreach($pelanggan as $p)
+                    <option value="{{ $p->idpelanggan }}" {{ old('idpelanggan', $motor->idpelanggan) == $p->idpelanggan ? 'selected' : '' }}>
+                        {{ $p->idpelanggan }} - {{ $p->nama }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         
         <div class="form-group">
