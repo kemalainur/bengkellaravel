@@ -23,11 +23,16 @@ class PartmanItemController extends Controller
 
     public function store(Request $request)
     {
+        // Sanitize Harga (remove dots)
+        if ($request->has('harga')) {
+            $request->merge(['harga' => str_replace('.', '', $request->harga)]);
+        }
+
         $request->validate([
             'iditem' => 'required|unique:item,iditem',
             'namaitem' => 'required|string|max:255',
-            'harga' => 'nullable|string',
-            'jenis' => 'nullable|string',
+            'harga' => 'nullable|numeric',
+            'jenis' => 'nullable|string|in:part,jasa',
             'qty' => 'nullable|integer',
         ]);
 
@@ -36,33 +41,38 @@ class PartmanItemController extends Controller
         return redirect()->route('partman.item.index')->with('success', 'Item berhasil ditambahkan!');
     }
 
-    public function edit($iditem)
+    public function edit($item)
     {
-        $item = Item::findOrFail($iditem);
+        $item = Item::findOrFail($item);
         return view('item.edit', [
             'item' => $item,
             'routePrefix' => 'partman.item'
         ]);
     }
 
-    public function update(Request $request, $iditem)
+    public function update(Request $request, $item)
     {
+        // Sanitize Harga (remove dots)
+        if ($request->has('harga')) {
+            $request->merge(['harga' => str_replace('.', '', $request->harga)]);
+        }
+
         $request->validate([
             'namaitem' => 'required|string|max:255',
-            'harga' => 'nullable|string',
-            'jenis' => 'nullable|string',
+            'harga' => 'nullable|numeric',
+            'jenis' => 'nullable|string|in:part,jasa',
             'qty' => 'nullable|integer',
         ]);
 
-        $item = Item::findOrFail($iditem);
+        $item = Item::findOrFail($item);
         $item->update($request->only(['namaitem', 'harga', 'jenis', 'qty']));
 
         return redirect()->route('partman.item.index')->with('success', 'Item berhasil diupdate!');
     }
 
-    public function destroy($iditem)
+    public function destroy($item)
     {
-        $item = Item::findOrFail($iditem);
+        $item = Item::findOrFail($item);
         $item->delete();
         return redirect()->route('partman.item.index')->with('success', 'Item berhasil dihapus!');
     }

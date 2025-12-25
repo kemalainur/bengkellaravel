@@ -31,8 +31,8 @@
             <label class="form-label">Jenis</label>
             <select name="jenis" class="form-select">
                 <option value="">-- Pilih Jenis --</option>
-                <option value="Barang" {{ old('jenis', $item->jenis) == 'Barang' ? 'selected' : '' }}>Barang</option>
-                <option value="Jasa" {{ old('jenis', $item->jenis) == 'Jasa' ? 'selected' : '' }}>Jasa</option>
+                <option value="part" {{ old('jenis', $item->jenis) == 'part' ? 'selected' : '' }}>Barang</option>
+                <option value="jasa" {{ old('jenis', $item->jenis) == 'jasa' ? 'selected' : '' }}>Jasa</option>
             </select>
         </div>
         
